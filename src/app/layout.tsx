@@ -13,17 +13,26 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "やるぜ！ - これからやること宣言",
+  title: "YARUZE - これからやること宣言",
   description: "これからやることを宣言して、SNSでシェアしよう",
   openGraph: {
-    title: "やるぜ！ - これからやること宣言",
+    title: "YARUZE - これからやること宣言",
     description: "これからやることを宣言して、SNSでシェアしよう",
     type: "website",
+    images: [
+      {
+        url: '/api/og?title=YARUZE',
+        width: 1200,
+        height: 630,
+        alt: 'YARUZE - これからやること宣言',
+      }
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "やるぜ！ - これからやること宣言",
+    title: "YARUZE - これからやること宣言",
     description: "これからやることを宣言して、SNSでシェアしよう",
+    images: ['/api/og?title=YARUZE'],
   },
 };
 

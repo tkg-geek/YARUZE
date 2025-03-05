@@ -39,9 +39,18 @@ export default function Home() {
       img.src = imageUrl;
       
       // X（Twitter）共有URL
-      const shareText = encodeURIComponent(`${title}${description ? '\n' + description : ''}\n\n#これからやること宣言`);
-      const shareUrl = encodeURIComponent(window.location.origin);
-      setTwitterShareUrl(`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`);
+      const shareText = encodeURIComponent(`${title}${description ? '\n' + description : ''}\n\n#YARUZE`);
+      
+      // パラメータを含むURLを生成（OGP画像が表示されるように）
+      const shareUrlParams = new URLSearchParams();
+      shareUrlParams.append('title', title);
+      if (description) {
+        shareUrlParams.append('description', description);
+      }
+      const fullShareUrl = `${window.location.origin}/share?${shareUrlParams.toString()}`;
+      const encodedShareUrl = encodeURIComponent(fullShareUrl);
+      
+      setTwitterShareUrl(`https://twitter.com/intent/tweet?text=${shareText}&url=${encodedShareUrl}`);
     } else {
       setOgImageUrl('');
       setTwitterShareUrl('');
@@ -83,7 +92,7 @@ export default function Home() {
 
               <div>
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                  やることの説明
+                  何をやるぜ？
                 </label>
                 <div className="mt-1">
                   <textarea
