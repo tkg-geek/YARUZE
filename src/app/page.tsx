@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { debounce } from 'lodash';
 
 export default function Home() {
   const [title, setTitle] = useState('');
@@ -11,10 +12,18 @@ export default function Home() {
   const [twitterShareUrl, setTwitterShareUrl] = useState('');
   const [lineShareUrl, setLineShareUrl] = useState('');
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState('');
 
-  // OGP画像URLを生成
-  useEffect(() => {
-    if (title) {
+  // デバウンスされたOGP画像URL生成関数
+  const generateOgImageUrl = useCallback(
+    debounce((title: string, description: string) => {
+      if (!title) {
+        setOgImageUrl('');
+        setTwitterShareUrl('');
+        setLineShareUrl('');
+        return;
+      }
+
       const params = new URLSearchParams();
       params.append('title', title);
       if (description) {
@@ -60,12 +69,29 @@ export default function Home() {
       
       // LINE共有URL
       setLineShareUrl(`https://social-plugins.line.me/lineit/share?url=${encodedShareUrl}`);
-    } else {
-      setOgImageUrl('');
-      setTwitterShareUrl('');
-      setLineShareUrl('');
-    }
-  }, [title, description]);
+    }, 500), // 500ミリ秒の遅延
+    []
+  );
+
+  // タイトルまたは説明が変更されたときにデバウンスされた関数を呼び出す
+  useEffect(() => {
+    generateOgImageUrl(title, description);
+    
+    // コンポーネントのアンマウント時にデバウンス関数をキャンセル
+    return () => {
+      generateOgImageUrl.cancel();
+    };
+  }, [title, description, generateOgImageUrl]);
+
+  // プレビュー用の簡易OGP画像URL
+  const getPreviewImageUrl = () => {
+    return `/api/og-preview?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
+  };
+
+  // 実際のシェア用OGP画像URL
+  const getShareImageUrl = () => {
+    return `/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

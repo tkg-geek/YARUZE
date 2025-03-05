@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     // 透かし文字のパターンを作成
     const watermarkPattern = Array(20).fill('俺はやるぜ ').join(' ');
 
-    return new ImageResponse(
+    const response = new ImageResponse(
       (
         <div
           style={{
@@ -165,6 +165,11 @@ export async function GET(request: NextRequest) {
         height: 630,
       }
     );
+
+    // キャッシュヘッダーを設定
+    response.headers.set('Cache-Control', 'public, max-age=3600, s-maxage=3600');
+    
+    return response;
   } catch (error) {
     console.error(error);
     return new Response('OG画像の生成に失敗しました', { status: 500 });
