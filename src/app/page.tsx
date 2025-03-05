@@ -1,101 +1,143 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect } from 'react';
+import NextImage from 'next/image';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [ogImageUrl, setOgImageUrl] = useState('');
+  const [twitterShareUrl, setTwitterShareUrl] = useState('');
+  const [isPreviewLoading, setIsPreviewLoading] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // OGP画像URLを生成
+  useEffect(() => {
+    if (title) {
+      const params = new URLSearchParams();
+      params.append('title', title);
+      if (description) {
+        params.append('description', description);
+      }
+      
+      // 絶対URLを生成（開発環境とプロダクション環境で異なる）
+      const baseUrl = process.env.NODE_ENV === 'production' 
+        ? 'https://' + window.location.host
+        : 'http://' + window.location.host;
+      
+      // プレビュー更新のためのダミーパラメータを追加（キャッシュ回避）
+      const timestamp = new Date().getTime();
+      params.append('t', timestamp.toString());
+      
+      setIsPreviewLoading(true);
+      const imageUrl = `${baseUrl}/api/og?${params.toString()}`;
+      setOgImageUrl(imageUrl);
+      
+      // プレビュー読み込み完了を検知
+      const img = new window.Image();
+      img.onload = () => setIsPreviewLoading(false);
+      img.onerror = () => setIsPreviewLoading(false);
+      img.src = imageUrl;
+      
+      // X（Twitter）共有URL
+      const shareText = encodeURIComponent(`${title}${description ? '\n' + description : ''}\n\n#これからやること宣言`);
+      const shareUrl = encodeURIComponent(window.location.origin);
+      setTwitterShareUrl(`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`);
+    } else {
+      setOgImageUrl('');
+      setTwitterShareUrl('');
+    }
+  }, [title, description]);
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+            YARUZE
+          </h1>
+          <p className="mt-3 text-xl text-gray-500">
+            これからやることを宣言して、SNSでシェアしよう
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className="bg-white shadow overflow-hidden rounded-lg">
+          <div className="px-4 py-5 sm:p-6">
+            <div className="space-y-6">
+              <div>
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                  やるぜ宣言 <span className="text-red-500">*</span>
+                </label>
+                <div className="mt-1">
+                  <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                    placeholder="例：新しいプログラミング言語を学びます"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                  やることの説明
+                </label>
+                <div className="mt-1">
+                  <textarea
+                    id="description"
+                    name="description"
+                    rows={3}
+                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                    placeholder="詳細や目標を書いてみましょう"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-center">
+                {title && (
+                  <a
+                    href={twitterShareUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#1DA1F2] hover:bg-[#1a94da] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1DA1F2]"
+                  >
+                    <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                    Xでシェアする
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {ogImageUrl && (
+          <div className="mt-8">
+            <h2 className="text-lg font-medium text-gray-900 mb-4">プレビュー</h2>
+            <div className="bg-white p-4 rounded-lg shadow">
+              <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-lg bg-gray-100">
+                {isPreviewLoading ? (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <p className="text-gray-500">読み込み中...</p>
+                  </div>
+                ) : (
+                  <img
+                    src={ogImageUrl}
+                    alt="OGP画像プレビュー"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
