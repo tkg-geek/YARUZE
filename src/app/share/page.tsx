@@ -3,7 +3,9 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
 // 動的メタデータを生成
-export async function generateMetadata({ searchParams }: {
+export async function generateMetadata({ 
+  searchParams 
+}: {
   searchParams: { [key: string]: string | string[] | undefined }
 }): Promise<Metadata> {
   // URLパラメータからタイトルと説明文を取得
@@ -48,9 +50,12 @@ export async function generateMetadata({ searchParams }: {
   };
 }
 
-export default function SharePage({ searchParams }: {
-  searchParams: { [key: string]: string | string[] | undefined }
-}) {
+type Props = {
+  params: { [key: string]: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default function SharePage({ searchParams }: Props) {
   // URLパラメータからタイトルと説明文を取得
   const title = typeof searchParams.title === 'string' ? searchParams.title : '';
   const description = typeof searchParams.description === 'string' ? searchParams.description : '';
