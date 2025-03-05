@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
   const [title, setTitle] = useState('');
@@ -67,9 +68,9 @@ export default function Home() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            <a href="/" className="hover:text-indigo-600 transition-colors">
+            <Link href="/" className="hover:text-indigo-600 transition-colors">
               YARUZE
-            </a>
+            </Link>
           </h1>
           <p className="mt-3 text-xl text-gray-500">
             これからやることをSNSで宣言しよう
