@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import NextImage from 'next/image';
+import Image from 'next/image';
 
 export default function Home() {
   const [title, setTitle] = useState('');
@@ -127,10 +127,13 @@ export default function Home() {
                     <p className="text-gray-500">読み込み中...</p>
                   </div>
                 ) : (
-                  <img
+                  <Image
                     src={ogImageUrl}
                     alt="OGP画像プレビュー"
                     className="w-full h-full object-cover"
+                    fill
+                    unoptimized
+                    priority
                   />
                 )}
               </div>
