@@ -30,12 +30,17 @@ export default function Home() {
       
       setIsPreviewLoading(true);
       const imageUrl = `${baseUrl}/api/og?${params.toString()}`;
-      setOgImageUrl(imageUrl);
       
       // プレビュー読み込み完了を検知
       const img = new window.Image();
-      img.onload = () => setIsPreviewLoading(false);
-      img.onerror = () => setIsPreviewLoading(false);
+      img.onload = () => {
+        setOgImageUrl(imageUrl);
+        setIsPreviewLoading(false);
+      };
+      img.onerror = () => {
+        setOgImageUrl('');
+        setIsPreviewLoading(false);
+      };
       img.src = imageUrl;
       
       // X（Twitter）共有URL
@@ -62,10 +67,12 @@ export default function Home() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            YARUZE
+            <a href="/" className="hover:text-indigo-600 transition-colors">
+              YARUZE
+            </a>
           </h1>
           <p className="mt-3 text-xl text-gray-500">
-            これからやることを宣言して、SNSでシェアしよう
+            これからやることをSNSで宣言しよう
           </p>
         </div>
 
@@ -82,7 +89,7 @@ export default function Home() {
                     name="title"
                     id="title"
                     className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
-                    placeholder="例：新しいプログラミング言語を学びます"
+                    placeholder="例：新しいプログラミング言語を学ぶぜ"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
@@ -100,7 +107,7 @@ export default function Home() {
                     name="description"
                     rows={3}
                     className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
-                    placeholder="詳細や目標を書いてみましょう"
+                    placeholder="詳細や目標を書いてみるぜ"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />
@@ -108,47 +115,63 @@ export default function Home() {
               </div>
 
               <div className="flex justify-center">
-                {title && (
-                  <a
-                    href={twitterShareUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#1DA1F2] hover:bg-[#1a94da] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1DA1F2]"
-                  >
-                    <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                    </svg>
-                    Xでシェアする
-                  </a>
-                )}
+                <a
+                  href={title ? twitterShareUrl : "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md ${
+                    title 
+                      ? "text-white bg-[#1DA1F2] hover:bg-[#1a94da] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1DA1F2]" 
+                      : "text-gray-400 bg-gray-200 cursor-not-allowed"
+                  }`}
+                  onClick={(e) => {
+                    if (!title) {
+                      e.preventDefault();
+                    }
+                  }}
+                >
+                  <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                  Xでシェアするぜ
+                </a>
               </div>
             </div>
           </div>
         </div>
 
-        {ogImageUrl && (
-          <div className="mt-8">
-            <h2 className="text-lg font-medium text-gray-900 mb-4">プレビュー</h2>
-            <div className="bg-white p-4 rounded-lg shadow">
-              <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-lg bg-gray-100">
-                {isPreviewLoading ? (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <p className="text-gray-500">読み込み中...</p>
-                  </div>
-                ) : (
-                  <Image
-                    src={ogImageUrl}
-                    alt="OGP画像プレビュー"
-                    className="w-full h-full object-cover"
-                    fill
-                    unoptimized
-                    priority
-                  />
-                )}
-              </div>
+        <div className="mt-8">
+          <h2 className="text-lg font-medium text-gray-900 mb-4">プレビュー</h2>
+          <div className="bg-white p-4 rounded-lg shadow">
+            <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-lg bg-gray-100">
+              {!title ? (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <p className="text-gray-500">タイトルを入力するとプレビューが表示されます</p>
+                </div>
+              ) : isPreviewLoading ? (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <p className="text-gray-500">読み込み中...</p>
+                </div>
+              ) : ogImageUrl ? (
+                <Image
+                  src={ogImageUrl}
+                  alt="OGP画像プレビュー"
+                  className="w-full h-full object-cover"
+                  fill
+                  unoptimized
+                  priority
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <p className="text-gray-500">画像の生成に失敗しました</p>
+                </div>
+              )}
             </div>
           </div>
-        )}
+        </div>
+      </div>
+      <div className="mt-8 text-center text-sm text-gray-500">
+        &copy; TKG
       </div>
     </div>
   );
