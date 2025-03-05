@@ -93,7 +93,7 @@ export default function Home() {
                     type="text"
                     name="title"
                     id="title"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border bg-white text-gray-900"
                     placeholder="例：新しいプログラミング言語を学ぶぜ!!"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -111,7 +111,7 @@ export default function Home() {
                     id="description"
                     name="description"
                     rows={3}
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border bg-white text-gray-900"
                     placeholder="詳細や目標を書いてみるぜ"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
