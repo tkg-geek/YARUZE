@@ -74,11 +74,11 @@ export default async function SharePage(props: {
         <div className="text-center mb-12">
           <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
             <Link href="/" className="hover:text-indigo-600 transition-colors">
-              YARUZE！
+              YARUZE
             </Link>
           </h1>
           <p className="mt-3 text-xl text-gray-500">
-            これからやることを宣言して、SNSでシェアしよう
+          これからやることをSNSで宣言しよう
           </p>
         </div>
         

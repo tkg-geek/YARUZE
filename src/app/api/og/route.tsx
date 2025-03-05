@@ -110,7 +110,7 @@ export async function GET(request: NextRequest) {
           >
             <div
               style={{
-                fontSize: '48px',
+                fontSize: '64px',
                 fontWeight: 'bold',
                 color: '#333',
                 textAlign: 'center',
@@ -124,7 +124,7 @@ export async function GET(request: NextRequest) {
             {description && (
               <div
                 style={{
-                  fontSize: '24px',
+                  fontSize: '32px',
                   color: '#666',
                   textAlign: 'center',
                   wordBreak: 'break-word',

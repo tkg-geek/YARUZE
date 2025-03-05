@@ -62,7 +62,7 @@ export default function Image() {
         >
           <div
             style={{
-              fontSize: '48px',
+              fontSize: '64px',
               fontWeight: 'bold',
               color: '#333',
               textAlign: 'center',
