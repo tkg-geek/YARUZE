@@ -3,12 +3,12 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
 // 動的メタデータを生成
-export async function generateMetadata({ 
-  searchParams 
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
+export async function generateMetadata(props: { 
+  params: Promise<{ [key: string]: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }): Promise<Metadata> {
   // URLパラメータからタイトルと説明文を取得
+  const searchParams = await props.searchParams;
   const title = typeof searchParams.title === 'string' ? searchParams.title : 'YARUZE';
   const description = typeof searchParams.description === 'string' ? searchParams.description : '';
   
@@ -50,13 +50,12 @@ export async function generateMetadata({
   };
 }
 
-type Props = {
-  params: { [key: string]: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}
-
-export default function SharePage({ searchParams }: Props) {
+export default async function SharePage(props: {
+  params: Promise<{ [key: string]: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   // URLパラメータからタイトルと説明文を取得
+  const searchParams = await props.searchParams;
   const title = typeof searchParams.title === 'string' ? searchParams.title : '';
   const description = typeof searchParams.description === 'string' ? searchParams.description : '';
   

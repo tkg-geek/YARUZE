@@ -92,7 +92,7 @@ export default function Home() {
 
               <div>
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                  何をやるぜ？
+                  詳しく何をやるぜ？
                 </label>
                 <div className="mt-1">
                   <textarea
