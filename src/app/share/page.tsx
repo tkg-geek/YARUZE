@@ -15,7 +15,9 @@ export async function generateMetadata(props: {
   // OGP画像のURLを生成
   const baseUrl = process.env.VERCEL_URL 
     ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000';
+    : process.env.NODE_ENV === 'production' 
+      ? 'https://yaruze.vercel.app' 
+      : 'http://localhost:3000';
     
   const params = new URLSearchParams();
   params.append('title', title);
@@ -23,9 +25,8 @@ export async function generateMetadata(props: {
     params.append('description', description);
   }
   
-  const ogImageUrl = `${baseUrl}/api/og?${params.toString()}`;
-  
   return {
+    metadataBase: new URL(baseUrl),
     title: title || 'YARUZE - これからやること宣言',
     description: description || 'これからやることを宣言して、SNSでシェアしよう',
     openGraph: {
@@ -34,7 +35,7 @@ export async function generateMetadata(props: {
       type: 'website',
       images: [
         {
-          url: ogImageUrl,
+          url: `/api/og?${params.toString()}`,
           width: 1200,
           height: 630,
           alt: title || 'YARUZE - これからやること宣言',
@@ -45,7 +46,7 @@ export async function generateMetadata(props: {
       card: 'summary_large_image',
       title: title || 'YARUZE - これからやること宣言',
       description: description || 'これからやることを宣言して、SNSでシェアしよう',
-      images: [ogImageUrl],
+      images: [`/api/og?${params.toString()}`],
     },
   };
 }
