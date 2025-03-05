@@ -12,12 +12,11 @@ export default function Home() {
   const [twitterShareUrl, setTwitterShareUrl] = useState('');
   const [lineShareUrl, setLineShareUrl] = useState('');
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState('');
 
   // デバウンスされたOGP画像URL生成関数
   const generateOgImageUrl = useCallback(
-    debounce((title: string, description: string) => {
-      if (!title) {
+    debounce((currentTitle: string, currentDescription: string) => {
+      if (!currentTitle) {
         setOgImageUrl('');
         setTwitterShareUrl('');
         setLineShareUrl('');
@@ -25,9 +24,9 @@ export default function Home() {
       }
 
       const params = new URLSearchParams();
-      params.append('title', title);
-      if (description) {
-        params.append('description', description);
+      params.append('title', currentTitle);
+      if (currentDescription) {
+        params.append('description', currentDescription);
       }
       
       // 絶対URLを生成（開発環境とプロダクション環境で異なる）
@@ -56,21 +55,21 @@ export default function Home() {
       
       // パラメータを含むURLを生成（OGP画像が表示されるように）
       const shareUrlParams = new URLSearchParams();
-      shareUrlParams.append('title', title);
-      if (description) {
-        shareUrlParams.append('description', description);
+      shareUrlParams.append('title', currentTitle);
+      if (currentDescription) {
+        shareUrlParams.append('description', currentDescription);
       }
       const fullShareUrl = `${window.location.origin}/share?${shareUrlParams.toString()}`;
       const encodedShareUrl = encodeURIComponent(fullShareUrl);
       
       // X（Twitter）共有URL
-      const shareText = encodeURIComponent(`${title}\n\n#YARUZE`);
+      const shareText = encodeURIComponent(`${currentTitle}\n\n#YARUZE`);
       setTwitterShareUrl(`https://twitter.com/intent/tweet?text=${shareText}&url=${encodedShareUrl}`);
       
       // LINE共有URL
       setLineShareUrl(`https://social-plugins.line.me/lineit/share?url=${encodedShareUrl}`);
     }, 500), // 500ミリ秒の遅延
-    []
+    [setOgImageUrl, setTwitterShareUrl, setLineShareUrl, setIsPreviewLoading] // 依存関係を明示的に指定
   );
 
   // タイトルまたは説明が変更されたときにデバウンスされた関数を呼び出す
@@ -82,16 +81,6 @@ export default function Home() {
       generateOgImageUrl.cancel();
     };
   }, [title, description, generateOgImageUrl]);
-
-  // プレビュー用の簡易OGP画像URL
-  const getPreviewImageUrl = () => {
-    return `/api/og-preview?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
-  };
-
-  // 実際のシェア用OGP画像URL
-  const getShareImageUrl = () => {
-    return `/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
