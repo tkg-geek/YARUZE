@@ -13,12 +13,6 @@ export async function generateMetadata(props: {
   const description = typeof searchParams.description === 'string' ? searchParams.description : '';
   
   // OGP画像のURLを生成
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}`
-    : process.env.NODE_ENV === 'production' 
-      ? 'https://yaruze.vercel.app' 
-      : 'http://localhost:3000';
-    
   const params = new URLSearchParams();
   params.append('title', title);
   if (description) {
@@ -26,7 +20,6 @@ export async function generateMetadata(props: {
   }
   
   return {
-    metadataBase: new URL(baseUrl),
     title: title || 'YARUZE - これからやること宣言',
     description: description || 'これからやることを宣言して、SNSでシェアしよう',
     openGraph: {

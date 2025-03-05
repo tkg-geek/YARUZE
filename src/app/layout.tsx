@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://yaruze.vercel.app'),
   title: "YARUZE - これからやること宣言",
   description: "これからやることを宣言して、SNSでシェアしよう",
   openGraph: {
