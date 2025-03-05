@@ -90,7 +90,7 @@ export default function Home() {
                     name="title"
                     id="title"
                     className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
-                    placeholder="例：新しいプログラミング言語を学ぶぜ"
+                    placeholder="例：新しいプログラミング言語を学ぶぜ!!"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required

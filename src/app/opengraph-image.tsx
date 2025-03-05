@@ -41,7 +41,7 @@ export default function Image() {
               color: '#333',
             }}
           >
-            YARUZE
+            YARUZE!!!
           </div>
         </div>
 
