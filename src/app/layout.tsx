@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: '/api/og?title=YARUZE',
+        url: '/api/og?title=やることを宣言するぜ！&description=テキストに応じてOGPが生成されるぜ！',
         width: 1200,
         height: 630,
         alt: 'YARUZE - これからやること宣言',
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "YARUZE - これからやること宣言",
     description: "これからやることを宣言して、SNSでシェアしよう",
-    images: ['/api/og?title=YARUZE'],
+    images: ['/api/og?title=やることを宣言するぜ！&description=テキストに応じてOGPが生成されるぜ！'],
   },
 };
 
