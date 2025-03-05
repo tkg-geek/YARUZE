@@ -109,7 +109,6 @@ export default function Image() {
     ),
     {
       ...size,
-      alt,
     }
   );
 } 

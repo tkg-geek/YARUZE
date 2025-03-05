@@ -7,7 +7,7 @@ export const size = {
   height: 630,
 };
 
-export default async function Image({ params }: { params: Record<string, string> }) {
+export default async function Image() {
   try {
     // 現在の日付を取得
     const date = new Date().toLocaleDateString('ja-JP', {
@@ -125,7 +125,6 @@ export default async function Image({ params }: { params: Record<string, string>
       ),
       {
         ...size,
-        alt,
       }
     );
   } catch (error) {

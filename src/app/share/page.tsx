@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // 動的メタデータを生成
 export async function generateMetadata(props: { 
@@ -86,10 +87,12 @@ export default async function SharePage(props: {
           )}
           
           <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-lg bg-gray-100 mb-6">
-            <img
+            <Image
               src={ogImageUrl}
               alt="OGP画像プレビュー"
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              unoptimized
             />
           </div>
           
