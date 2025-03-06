@@ -8,14 +8,23 @@ import { debounce } from 'lodash';
 export default function Home() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [progress, setProgress] = useState('0%');
+  const [progressValue, setProgressValue] = useState(0);
   const [ogImageUrl, setOgImageUrl] = useState('');
   const [twitterShareUrl, setTwitterShareUrl] = useState('');
   const [lineShareUrl, setLineShareUrl] = useState('');
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
 
+  // 進捗率の値が変更されたときの処理
+  const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    setProgressValue(value);
+    setProgress(`${value}%`);
+  };
+
   // デバウンスされたOGP画像URL生成関数
   const generateOgImageUrl = useCallback(
-    debounce((currentTitle: string, currentDescription: string) => {
+    debounce((currentTitle: string, currentDescription: string, currentProgress: string) => {
       if (!currentTitle) {
         setOgImageUrl('');
         setTwitterShareUrl('');
@@ -27,6 +36,9 @@ export default function Home() {
       params.append('title', currentTitle);
       if (currentDescription) {
         params.append('description', currentDescription);
+      }
+      if (currentProgress) {
+        params.append('progress', currentProgress);
       }
       
       // 絶対URLを生成（開発環境とプロダクション環境で異なる）
@@ -59,6 +71,9 @@ export default function Home() {
       if (currentDescription) {
         shareUrlParams.append('description', currentDescription);
       }
+      if (currentProgress) {
+        shareUrlParams.append('progress', currentProgress);
+      }
       const fullShareUrl = `${window.location.origin}/share?${shareUrlParams.toString()}`;
       const encodedShareUrl = encodeURIComponent(fullShareUrl);
       
@@ -72,15 +87,15 @@ export default function Home() {
     [setOgImageUrl, setTwitterShareUrl, setLineShareUrl, setIsPreviewLoading] // 依存関係を明示的に指定
   );
 
-  // タイトルまたは説明が変更されたときにデバウンスされた関数を呼び出す
+  // タイトル、説明、進捗率が変更されたときにデバウンスされた関数を呼び出す
   useEffect(() => {
-    generateOgImageUrl(title, description);
+    generateOgImageUrl(title, description, progress);
     
     // コンポーネントのアンマウント時にデバウンス関数をキャンセル
     return () => {
       generateOgImageUrl.cancel();
     };
-  }, [title, description, generateOgImageUrl]);
+  }, [title, description, progress, generateOgImageUrl]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -131,6 +146,30 @@ export default function Home() {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="progress" className="block text-sm font-medium text-gray-700">
+                  進捗率: {progress}
+                </label>
+                <div className="mt-1 flex items-center">
+                  <input
+                    type="range"
+                    name="progress"
+                    id="progress"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value={progressValue}
+                    onChange={handleProgressChange}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                  />
+                </div>
+                <div className="mt-1 flex justify-between text-xs text-gray-500">
+                  <span>0%</span>
+                  <span>50%</span>
+                  <span>100%</span>
                 </div>
               </div>
 
@@ -190,6 +229,9 @@ export default function Home() {
                     shareUrlParams.append('title', title);
                     if (description) {
                       shareUrlParams.append('description', description);
+                    }
+                    if (progress) {
+                      shareUrlParams.append('progress', progress);
                     }
                     const fullShareUrl = `${window.location.origin}/share?${shareUrlParams.toString()}`;
                     

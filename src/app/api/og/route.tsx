@@ -7,9 +7,10 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     
-    // タイトルとオプションの説明文を取得
+    // タイトルとオプションの説明文、進捗率を取得
     const title = searchParams.get('title') || 'これからやること宣言';
     const description = searchParams.get('description') || '';
+    const progress = searchParams.get('progress') || '';
     
     // 現在の日付を取得
     const date = new Date().toLocaleDateString('ja-JP', {
@@ -106,11 +107,12 @@ export async function GET(request: NextRequest) {
               padding: '40px',
               boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
               zIndex: 1,
+              position: 'relative',
             }}
           >
             <div
               style={{
-                fontSize: '64px',
+                fontSize: '48px',
                 fontWeight: 'bold',
                 color: '#333',
                 textAlign: 'center',
@@ -124,14 +126,34 @@ export async function GET(request: NextRequest) {
             {description && (
               <div
                 style={{
-                  fontSize: '32px',
+                  fontSize: '24px',
                   color: '#666',
                   textAlign: 'center',
                   wordBreak: 'break-word',
                   width: '100%',
+                  marginBottom: progress ? '40px' : '0',
                 }}
               >
                 {description}
+              </div>
+            )}
+            {progress && (
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: '20px',
+                  fontSize: '32px',
+                  fontWeight: 'bold',
+                  color: '#E53935',
+                  textAlign: 'center',
+                  padding: '8px 20px',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(255, 240, 230, 0.8)',
+                  border: '2px solid #E53935',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                }}
+              >
+                {'進捗率: ' + progress}
               </div>
             )}
           </div>

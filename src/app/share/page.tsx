@@ -8,16 +8,20 @@ export async function generateMetadata(props: {
   params: Promise<{ [key: string]: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }): Promise<Metadata> {
-  // URLパラメータからタイトルと説明文を取得
+  // URLパラメータからタイトルと説明文、進捗率を取得
   const searchParams = await props.searchParams;
   const title = typeof searchParams.title === 'string' ? searchParams.title : 'YARUZE';
   const description = typeof searchParams.description === 'string' ? searchParams.description : '';
+  const progress = typeof searchParams.progress === 'string' ? searchParams.progress : '';
   
   // OGP画像のURLを生成
   const params = new URLSearchParams();
   params.append('title', title);
   if (description) {
     params.append('description', description);
+  }
+  if (progress) {
+    params.append('progress', progress);
   }
   
   return {
@@ -49,10 +53,11 @@ export default async function SharePage(props: {
   params: Promise<{ [key: string]: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  // URLパラメータからタイトルと説明文を取得
+  // URLパラメータからタイトルと説明文、進捗率を取得
   const searchParams = await props.searchParams;
   const title = typeof searchParams.title === 'string' ? searchParams.title : '';
   const description = typeof searchParams.description === 'string' ? searchParams.description : '';
+  const progress = typeof searchParams.progress === 'string' ? searchParams.progress : '';
   
   // タイトルがない場合はトップページにリダイレクト
   if (!title) {
@@ -64,6 +69,9 @@ export default async function SharePage(props: {
   params.append('title', title);
   if (description) {
     params.append('description', description);
+  }
+  if (progress) {
+    params.append('progress', progress);
   }
   
   const ogImageUrl = `/api/og?${params.toString()}`;
@@ -85,7 +93,10 @@ export default async function SharePage(props: {
         <div className="bg-white shadow overflow-hidden rounded-lg p-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">{title}</h2>
           {description && (
-            <p className="text-gray-700 mb-6">{description}</p>
+            <p className="text-gray-700 mb-4">{description}</p>
+          )}
+          {progress && (
+            <p className="text-gray-700 font-semibold mb-6">進捗率: {progress}</p>
           )}
           
           <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-lg bg-gray-100 mb-6">
