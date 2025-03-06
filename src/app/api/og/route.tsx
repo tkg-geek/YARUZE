@@ -12,6 +12,10 @@ export async function GET(request: NextRequest) {
     const description = searchParams.get('description') || '';
     const progress = searchParams.get('progress') || '';
     
+    // 進捗率を数値に変換（数値でない場合は0にする）
+    const progressValue = progress ? parseInt(progress) : 0;
+    const validProgressValue = isNaN(progressValue) ? 0 : Math.min(Math.max(progressValue, 0), 100);
+    
     // 現在の日付を取得
     const date = new Date().toLocaleDateString('ja-JP', {
       year: 'numeric',
@@ -148,12 +152,25 @@ export async function GET(request: NextRequest) {
                   textAlign: 'center',
                   padding: '8px 20px',
                   borderRadius: '8px',
-                  backgroundColor: 'rgba(255, 240, 230, 0.8)',
-                  border: '2px solid #E53935',
-                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  width: '700px',
                 }}
               >
                 {'進捗率: ' + progress}
+                <div
+                  style={{
+                    width: '100%',
+                    height: '15px',
+                    background: `linear-gradient(to right, #4CAF50 ${validProgressValue}%, #FFCDD2 ${validProgressValue}%)`,
+                    borderRadius: '10px',
+                    marginTop: '10px',
+                    overflow: 'hidden',
+                    position: 'relative',
+                  }}
+                >
+                </div>
               </div>
             )}
           </div>
