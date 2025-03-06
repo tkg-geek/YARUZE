@@ -134,12 +134,12 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex justify-center space-x-4">
+              <div className="flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-4">
                 <a
                   href={title ? twitterShareUrl : "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md ${
+                  className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md w-full sm:w-auto justify-center ${
                     title 
                       ? "text-white bg-[#1DA1F2] hover:bg-[#1a94da] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1DA1F2]" 
                       : "text-gray-400 bg-gray-200 cursor-not-allowed"
@@ -153,14 +153,14 @@ export default function Home() {
                   <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
-                  Xで宣言だぜ
+                  Xで宣言するぜ
                 </a>
                 
                 <a
                   href={title ? lineShareUrl : "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md ${
+                  className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md w-full sm:w-auto justify-center ${
                     title 
                       ? "text-white bg-[#06C755] hover:bg-[#05b54c] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#06C755]" 
                       : "text-gray-400 bg-gray-200 cursor-not-allowed"
@@ -174,8 +174,40 @@ export default function Home() {
                   <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M22 10.6c0-4.1-4.1-7.5-9.2-7.5-5.1 0-9.2 3.4-9.2 7.5 0 3.7 3.3 6.8 7.8 7.4.3.1.7.2.8.5.1.3 0 .7 0 .9l-.1.6c0 .2-.2.8.7.4s4.6-2.7 6.3-4.6c1.2-1.2 1.9-2.5 1.9-4.2z" />
                   </svg>
-                  LINEで宣言だぜ
+                  LINEで宣言するぜ
                 </a>
+                
+                <button
+                  className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md w-full sm:w-auto justify-center ${
+                    title 
+                      ? "text-white bg-[#6366F1] hover:bg-[#4F46E5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6366F1]" 
+                      : "text-gray-400 bg-gray-200 cursor-not-allowed"
+                  }`}
+                  onClick={() => {
+                    if (!title) return;
+                    
+                    const shareUrlParams = new URLSearchParams();
+                    shareUrlParams.append('title', title);
+                    if (description) {
+                      shareUrlParams.append('description', description);
+                    }
+                    const fullShareUrl = `${window.location.origin}/share?${shareUrlParams.toString()}`;
+                    
+                    navigator.clipboard.writeText(fullShareUrl)
+                      .then(() => {
+                        alert('URLをコピーしました！');
+                      })
+                      .catch(err => {
+                        console.error('URLのコピーに失敗しました:', err);
+                      });
+                  }}
+                  disabled={!title}
+                >
+                  <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M7.5 3.75a1.5 1.5 0 0 0-1.5 1.5v.75H3.75a1.5 1.5 0 0 0-1.5 1.5v12a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5V17.25h.75a1.5 1.5 0 0 0 1.5-1.5v-12a1.5 1.5 0 0 0-1.5-1.5h-10.5Zm10.5 6v-3h-9v9h3v3h-3a1.5 1.5 0 0 1-1.5-1.5v-9a1.5 1.5 0 0 1 1.5-1.5h9Z" />
+                  </svg>
+                  URLをコピーするぜ
+                </button>
               </div>
             </div>
           </div>
@@ -187,11 +219,11 @@ export default function Home() {
             <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-lg bg-gray-100">
               {!title ? (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-gray-500">タイトルを入力するとプレビューが表示されます</p>
+                  <p className="text-gray-500 text-center">OGP画像がプレビューが表示されるぜ<br />※SNSに投稿するときに画像が出るやつのことだぜ!?</p>
                 </div>
               ) : isPreviewLoading ? (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-gray-500">読み込み中...</p>
+                  <p className="text-gray-500">読み込み中だぜ...</p>
                 </div>
               ) : ogImageUrl ? (
                 <Image
