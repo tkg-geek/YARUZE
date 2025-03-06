@@ -38,25 +38,25 @@ export const metadata: Metadata = {
       },
     ],
   },
-  // openGraph: {
-  //   title: "YARUZE - これからやること宣言",
-  //   description: "これからやることを宣言して、SNSでシェアしよう",
-  //   type: "website",
-  //   images: [
-  //     {
-  //       url: '/api/og?title=%E3%82%84%E3%82%8B%E3%81%93%E3%81%A8%E3%82%92%E5%AE%A3%E8%A8%80%E3%81%99%E3%82%8B%E3%81%9C%EF%BC%81&description=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%81%AB%E5%BF%9C%E3%81%98%E3%81%A6OGP%E3%81%8C%E7%94%9F%E6%88%90%E3%81%95%E3%82%8C%E3%82%8B%E3%81%9C%EF%BC%81',
-  //       width: 1200,
-  //       height: 630,
-  //       alt: 'YARUZE - これからやること宣言',
-  //     }
-  //   ],
-  // },
-  // twitter: {
-  //   card: "summary_large_image",
-  //   title: "YARUZE - これからやること宣言",
-  //   description: "これからやることを宣言して、SNSでシェアしよう",
-  //   images: ['/api/og?title=%E3%82%84%E3%82%8B%E3%81%93%E3%81%A8%E3%82%92%E5%AE%A3%E8%A8%80%E3%81%99%E3%82%8B%E3%81%9C%EF%BC%81&description=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%81%AB%E5%BF%9C%E3%81%98%E3%81%A6OGP%E3%81%8C%E7%94%9F%E6%88%90%E3%81%95%E3%82%8C%E3%82%8B%E3%81%9C%EF%BC%81'],
-  // },
+  openGraph: {
+    title: "YARUZE - これからやること宣言",
+    description: "これからやることを宣言して、SNSでシェアしよう",
+    type: "website",
+    images: [
+      {
+        url: '/api/og?title=%E3%82%84%E3%82%8B%E3%81%93%E3%81%A8%E3%82%92%E5%AE%A3%E8%A8%80%E3%81%99%E3%82%8B%E3%81%9C%EF%BC%81&description=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%81%AB%E5%BF%9C%E3%81%98%E3%81%A6OGP%E3%81%8C%E7%94%9F%E6%88%90%E3%81%95%E3%82%8C%E3%82%8B%E3%81%9C%EF%BC%81',
+        width: 1200,
+        height: 630,
+        alt: 'YARUZE - これからやること宣言',
+      }
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "YARUZE - これからやること宣言",
+    description: "これからやることを宣言して、SNSでシェアしよう",
+    images: ['/api/og?title=%E3%82%84%E3%82%8B%E3%81%93%E3%81%A8%E3%82%92%E5%AE%A3%E8%A8%80%E3%81%99%E3%82%8B%E3%81%9C%EF%BC%81&description=%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%81%AB%E5%BF%9C%E3%81%98%E3%81%A6OGP%E3%81%8C%E7%94%9F%E6%88%90%E3%81%95%E3%82%8C%E3%82%8B%E3%81%9C%EF%BC%81'],
+  },
 };
 
 export default function RootLayout({
