@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
           >
             <div
               style={{
-                fontSize: '48px',
+                fontSize: '56px',
                 fontWeight: 'bold',
                 color: '#333',
                 textAlign: 'center',
